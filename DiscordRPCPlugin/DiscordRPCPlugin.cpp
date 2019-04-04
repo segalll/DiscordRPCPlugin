@@ -8,7 +8,7 @@
 #include "bakkesmod\wrappers\GameEvent\GameEventWrapper.h"
 #include "time.h"
 
-BAKKESMOD_PLUGIN(DiscordRPCPlugin, "Discord RPC plugin", "0.1", PLUGINTYPE_THREADED)
+BAKKESMOD_PLUGIN(DiscordRPCPlugin, "Discord RPC plugin", "1.0", PLUGINTYPE_THREADED)
 
 static const char* APPLICATION_ID = "562098317547405322";
 
