@@ -136,10 +136,8 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 				}
 				else {
 					if (!gameState.wrapper.GetbUnlimitedTime()) {
-						if (gameState.wrapper.GetWaitTimeRemaining() <= 0) {
-							startTime = time(0);
-							endTime = startTime + gameState.wrapper.GetSecondsRemaining();
-						}
+						startTime = time(0);
+						endTime = startTime + gameState.wrapper.GetSecondsRemaining();
 					}
 				}
 			}
@@ -174,10 +172,8 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 			}
 			else {
 				if (!gameState.wrapper.GetbUnlimitedTime()) {
-					if (gameState.wrapper.GetWaitTimeRemaining() <= 0) {
-						startTime = time(0);
-						endTime = startTime + gameState.wrapper.GetSecondsRemaining();
-					}
+					startTime = time(0);
+					endTime = startTime + gameState.wrapper.GetSecondsRemaining();
 				}
 			}
 		}
@@ -222,10 +218,8 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 			}
 			else {
 				if (!gameState.wrapper.GetbUnlimitedTime()) {
-					if (gameState.wrapper.GetWaitTimeRemaining() <= 0) {
-						startTime = time(0);
-						endTime = startTime + gameState.wrapper.GetSecondsRemaining();
-					}
+					startTime = time(0);
+					endTime = startTime + gameState.wrapper.GetSecondsRemaining();
 				}
 			}
 		}
@@ -242,7 +236,7 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 	discordPresence.largeImageKey = "logo";
 	discordPresence.largeImageText = hoverBuffer;
 	Discord_UpdatePresence(&discordPresence);
-	gameWrapper->SetTimeout(bind(&DiscordRPCPlugin::updateRPC, this, prevCheck, startTime, endTime, prevOvertime, localPlayerTeam), 0.5f);
+	gameWrapper->SetTimeout(bind(&DiscordRPCPlugin::updateRPC, this, prevCheck, startTime, endTime, prevOvertime, localPlayerTeam), 1.0f);
 }
 
 void DiscordRPCPlugin::OnEnableChange(string eventName) {
