@@ -61,105 +61,90 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 	char hoverBuffer[128];
 	char stateBuffer[128];
 	if (prevCheck != gameState.name) {
+		prevCheck = gameState.name;
 		startTime = time(0);
+		endTime = NULL;
 	}
 	if (gameState.name == "menu") {
-		prevCheck = "menu";
 		details = "On main menu";
 	}
 	if (!gameState.wrapper.IsNull()) {
 		if (gameState.name == "online" && cvarManager->getCvar("showOnlineGames").getBoolValue()) {
-			prevCheck = gameState.name;
 			GameSettingPlaylistWrapper playlistWrapper = gameState.wrapper.GetPlaylist();
 			string teamSize = to_string(gameState.wrapper.GetMaxTeamSize());
 			string gameType;
+			int teamGoals[2] = { 0, 0 };
 			if (!gameState.wrapper.GetTeams().Get(0).IsNull() && !gameState.wrapper.GetTeams().Get(1).IsNull()) {
-				int teamGoals[2] = { 0, 0 };
 				teamGoals[0] = gameState.wrapper.GetTeams().Get(0).GetScore();
 				teamGoals[1] = gameState.wrapper.GetTeams().Get(1).GetScore();
-				if (playlistWrapper.GetbRanked()) {
-					gameType = "Ranked";
-				}
-				else if (playlistWrapper.IsPrivateMatch()) {
-					gameType = "Private";
-				}
-				else if (playlistWrapper.GetbStandard()) {
-					gameType = "Casual";
-				}
-
-				if (gameState.wrapper.GetbMatchEnded()) {
-					details = "In " + gameType + " " + teamSize + "v" + teamSize + " lobby";
-					startTime = NULL;
-					CarWrapper localPlayer = gameWrapper->GetLocalCar();
-					if (!localPlayer.IsNull()) {
-						localPlayerTeam = localPlayer.GetPRI().GetTeamNum();
-					}
-					string plyGoals;
-					string enemyGoals;
-					if (localPlayerTeam == 0) {
-						plyGoals = to_string(teamGoals[0]);
-						enemyGoals = to_string(teamGoals[1]);
-					}
-					else if (localPlayerTeam == 1) {
-						enemyGoals = to_string(teamGoals[0]);
-						plyGoals = to_string(teamGoals[1]);
-					}
-					if (plyGoals > enemyGoals) {
-						state = "Won ";
-					}
-					else {
-						state = "Lost ";
-					}
-					state += "(" + plyGoals + " - " + enemyGoals + ")";
+			}
+			if (playlistWrapper.GetbRanked()) {
+				gameType = "Ranked";
+			}
+			else if (playlistWrapper.IsPrivateMatch()) {
+				gameType = "Private";
+			}
+			else if (playlistWrapper.GetbStandard()) {
+				gameType = "Casual";
+			}
+			CarWrapper localPlayer = gameWrapper->GetLocalCar();
+			if (!localPlayer.IsNull()) {
+				localPlayerTeam = localPlayer.GetPRI().GetTeamNum();
+			}
+			string plyGoals;
+			string enemyGoals;
+			if (localPlayerTeam == 0) {
+				plyGoals = to_string(teamGoals[0]);
+				enemyGoals = to_string(teamGoals[1]);
+			}
+			else if (localPlayerTeam == 1) {
+				enemyGoals = to_string(teamGoals[0]);
+				plyGoals = to_string(teamGoals[1]);
+			}
+			if (gameState.wrapper.GetbMatchEnded()) {
+				details = "In " + gameType + " " + teamSize + "v" + teamSize + " lobby";
+				startTime = NULL;
+				endTime = NULL;
+				if (plyGoals > enemyGoals) {
+					state = "Won ";
 				}
 				else {
-					details = "Playing " + gameType + " " + teamSize + "v" + teamSize;
-					CarWrapper localPlayer = gameWrapper->GetLocalCar();
-					if (!localPlayer.IsNull()) {
-						localPlayerTeam = localPlayer.GetPRI().GetTeamNum();
-					}
-					string plyGoals;
-					string enemyGoals;
-					if (localPlayerTeam == 0) {
-						plyGoals = to_string(teamGoals[0]);
-						enemyGoals = to_string(teamGoals[1]);
-					}
-					else if (localPlayerTeam == 1) {
-						enemyGoals = to_string(teamGoals[0]);
-						plyGoals = to_string(teamGoals[1]);
-					}
-					if (plyGoals > enemyGoals) {
-						state = "Winning ";
-					}
-					else if (plyGoals < enemyGoals) {
-						state = "Losing ";
-					}
-					else {
-						state = "Tied ";
-					}
-					state += plyGoals + " - " + enemyGoals;
+					state = "Lost ";
+				}
+				state += "(" + plyGoals + " - " + enemyGoals + ")";
+			}
+			else {
+				details = "Playing " + gameType + " " + teamSize + "v" + teamSize;
+				if (plyGoals > enemyGoals) {
+					state = "Winning ";
+				}
+				else if (plyGoals < enemyGoals) {
+					state = "Losing ";
+				}
+				else {
+					state = "Tied ";
+				}
+				state += plyGoals + " - " + enemyGoals;
 
-					if (gameState.wrapper.GetbOverTime()) {
-						endTime = NULL;
-						if (!prevOvertime) {
-							prevOvertime = true;
-							startTime = time(0);
-						}
-						state += " (OT)";
+				if (gameState.wrapper.GetbOverTime()) {
+					endTime = NULL;
+					if (!prevOvertime) {
+						prevOvertime = true;
+						startTime = time(0);
 					}
-					else {
-						if (!gameState.wrapper.GetbUnlimitedTime()) {
-							if (gameState.wrapper.GetWaitTimeRemaining() == 0) {
-								startTime = time(0);
-								endTime = startTime + gameState.wrapper.GetSecondsRemaining();
-							}
+					state += " (OT)";
+				}
+				else {
+					if (!gameState.wrapper.GetbUnlimitedTime()) {
+						if (gameState.wrapper.GetWaitTimeRemaining() <= 0) {
+							startTime = time(0);
+							endTime = startTime + gameState.wrapper.GetSecondsRemaining();
 						}
 					}
 				}
 			}
 		}
 		else if (gameState.name == "replay" && cvarManager->getCvar("showReplayViewing").getBoolValue()) {
-			prevCheck = gameState.name;
 			details = "hi";
 			GameSettingPlaylistWrapper playlistWrapper = gameState.wrapper.GetPlaylist();
 			string teamSize = to_string(gameState.wrapper.GetMaxTeamSize());
@@ -172,37 +157,34 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 			else if (playlistWrapper.GetbStandard()) {
 				details = "Watching Casual " + teamSize + "v" + teamSize;
 			}
-			
+			int teamGoals[2] = { 0, 0 };
 			if (!gameState.wrapper.GetTeams().Get(0).IsNull() && !gameState.wrapper.GetTeams().Get(1).IsNull()) {
-				int teamGoals[2] = { 0, 0 };
 				teamGoals[0] = gameState.wrapper.GetTeams().Get(0).GetScore();
 				teamGoals[1] = gameState.wrapper.GetTeams().Get(1).GetScore();
-				state = "(Blue) " + to_string(teamGoals[0]) + " - " + to_string(teamGoals[1]) + " (Red)";
+			}
+			state = "(Blue) " + to_string(teamGoals[0]) + " - " + to_string(teamGoals[1]) + " (Red)";
 
-				if (gameState.wrapper.GetbOverTime()) {
-					endTime = NULL;
-					if (!prevOvertime) {
-						prevOvertime = true;
-						startTime = time(0);
-					}
-					state += " (OT)";
+			if (gameState.wrapper.GetbOverTime()) {
+				endTime = NULL;
+				if (!prevOvertime) {
+					prevOvertime = true;
+					startTime = time(0);
 				}
-				else {
-					if (!gameState.wrapper.GetbUnlimitedTime()) {
-						if (gameState.wrapper.GetWaitTimeRemaining() == 0) {
-							startTime = time(0);
-							endTime = startTime + gameState.wrapper.GetSecondsRemaining();
-						}
+				state += " (OT)";
+			}
+			else {
+				if (!gameState.wrapper.GetbUnlimitedTime()) {
+					if (gameState.wrapper.GetWaitTimeRemaining() <= 0) {
+						startTime = time(0);
+						endTime = startTime + gameState.wrapper.GetSecondsRemaining();
 					}
 				}
 			}
 		}
 		else if (gameState.name == "freeplay" && cvarManager->getCvar("showFreeplay").getBoolValue()) {
-			prevCheck = gameState.name;
 			details = "In freeplay";
 		}
 		else if (gameState.name == "training" && cvarManager->getCvar("showCustomTraining").getBoolValue()) {
-			prevCheck = gameState.name;
 			TrainingEditorWrapper tew = gameState.wrapper.memory_address;
 			TrainingEditorSaveDataWrapper tesdw = tew.GetTrainingData().GetTrainingData();
 			int currentShot = tew.GetActiveRoundNumber() + 1;
@@ -211,7 +193,6 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 			hover = currentName + " (Shot " + to_string(currentShot) + "/" + to_string(tew.GetTotalRounds()) + ")";
 		}
 		else if (gameState.name == "spectate" && cvarManager->getCvar("showOnlineSpectating").getBoolValue()) {
-			prevCheck = gameState.name;
 			GameSettingPlaylistWrapper playlistWrapper = gameState.wrapper.GetPlaylist();
 			string teamSize = to_string(gameState.wrapper.GetMaxTeamSize());
 			if (playlistWrapper.GetbRanked()) {
@@ -224,26 +205,26 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 				details = "Spectating Casual " + teamSize + "v" + teamSize;
 			}
 
+			int teamGoals[2] = { 0, 0 };
 			if (!gameState.wrapper.GetTeams().Get(0).IsNull() && !gameState.wrapper.GetTeams().Get(1).IsNull()) {
-				int teamGoals[2] = { 0, 0 };
 				teamGoals[0] = gameState.wrapper.GetTeams().Get(0).GetScore();
 				teamGoals[1] = gameState.wrapper.GetTeams().Get(1).GetScore();
-				state = "(Blue) " + to_string(teamGoals[0]) + " - " + to_string(teamGoals[1]) + " (Red)";
+			}
+			state = "(Blue) " + to_string(teamGoals[0]) + " - " + to_string(teamGoals[1]) + " (Red)";
 
-				if (gameState.wrapper.GetbOverTime()) {
-					endTime = NULL;
-					if (!prevOvertime) {
-						prevOvertime = true;
-						startTime = time(0);
-					}
-					state += " (OT)";
+			if (gameState.wrapper.GetbOverTime()) {
+				endTime = NULL;
+				if (!prevOvertime) {
+					prevOvertime = true;
+					startTime = time(0);
 				}
-				else {
-					if (!gameState.wrapper.GetbUnlimitedTime()) {
-						if (gameState.wrapper.GetWaitTimeRemaining() == 0) {
-							startTime = time(0);
-							endTime = startTime + gameState.wrapper.GetSecondsRemaining();
-						}
+				state += " (OT)";
+			}
+			else {
+				if (!gameState.wrapper.GetbUnlimitedTime()) {
+					if (gameState.wrapper.GetWaitTimeRemaining() <= 0) {
+						startTime = time(0);
+						endTime = startTime + gameState.wrapper.GetSecondsRemaining();
 					}
 				}
 			}
