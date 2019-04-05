@@ -224,22 +224,27 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 				details = "Spectating Casual " + teamSize + "v" + teamSize;
 			}
 
-			int teamGoals[2] = { 0, 0 };
-			teamGoals[0] = gameState.wrapper.GetReplayDirector().GetReplay().GetTeam0Score();
-			teamGoals[1] = gameState.wrapper.GetReplayDirector().GetReplay().GetTeam1Score();
-			state = "(Blue) " + to_string(teamGoals[0]) + " - " + to_string(teamGoals[1]) + " (Red)";
+			if (!gameState.wrapper.GetTeams().Get(0).IsNull() && !gameState.wrapper.GetTeams().Get(1).IsNull()) {
+				int teamGoals[2] = { 0, 0 };
+				teamGoals[0] = gameState.wrapper.GetTeams().Get(0).GetScore();
+				teamGoals[1] = gameState.wrapper.GetTeams().Get(1).GetScore();
+				state = "(Blue) " + to_string(teamGoals[0]) + " - " + to_string(teamGoals[1]) + " (Red)";
 
-			if (gameState.wrapper.GetbOverTime()) {
-				if (!prevOvertime) {
-					prevOvertime = true;
-					startTime = time(0);
+				if (gameState.wrapper.GetbOverTime()) {
+					endTime = NULL;
+					if (!prevOvertime) {
+						prevOvertime = true;
+						startTime = time(0);
+					}
+					state += " (OT)";
 				}
-				state += " in overtime";
-			}
-			else {
-				if (!gameState.wrapper.GetbUnlimitedTime()) {
-					startTime = time(0);
-					endTime = startTime + gameState.wrapper.GetSecondsRemaining();
+				else {
+					if (!gameState.wrapper.GetbUnlimitedTime()) {
+						if (gameState.wrapper.GetWaitTimeRemaining() == 0) {
+							startTime = time(0);
+							endTime = startTime + gameState.wrapper.GetSecondsRemaining();
+						}
+					}
 				}
 			}
 		}
