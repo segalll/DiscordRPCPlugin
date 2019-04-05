@@ -57,6 +57,7 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 	string details;
 	string hover;
 	string state;
+	bool run = true;
 	char detailBuffer[128];
 	char hoverBuffer[128];
 	char stateBuffer[128];
@@ -244,7 +245,6 @@ void DiscordRPCPlugin::OnEnableChange(string eventName) {
 	bool enabled = cvarManager->getCvar("enableRPC").getBoolValue();
 	if (enabled) {
 		discordInit();
-		updateRPC();
 	}
 	else {
 		Discord_Shutdown();
