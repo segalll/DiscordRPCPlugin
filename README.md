@@ -9,17 +9,17 @@ Custom plugin for BakkesMod that integrates Discord Rich Presence into Rocket Le
 
 ## Commands
 
-**enableRPC 1|0** - Enable Discord RPC (Default: 1)
+**rpc_enabled 1|0** - Enable Discord RPC (Default: 1)
 
-**showOnlineGames 1|0** - Should show online games in Rich Presence (Default: 1)
+**rpc_show_online_games 1|0** - Should show online games in Rich Presence (Default: 1)
 
-**showReplayViewing 1|0** - Should show replay viewing in Rich Presence (Default: 1)
+**rpc_show_replays 1|0** - Should show replay viewing in Rich Presence (Default: 1)
 
-**showFreeplay 1|0** - Should show freeplay in Rich Presence (Default: 1)
+**rpc_show_freeplay 1|0** - Should show freeplay in Rich Presence (Default: 1)
 
-**showCustomTraining 1|0** - Should show custom training in Rich Presence (Default: 1)
+**rpc_show_training 1|0** - Should show custom training in Rich Presence (Default: 1)
 
-**showOnlineSpectating 1|0** - Should show spectating online games in Rich Presence (Default: 1)
+**rpc_show_spectating 1|0** - Should show spectating online games in Rich Presence (Default: 1)
 
 ## Modifying
 

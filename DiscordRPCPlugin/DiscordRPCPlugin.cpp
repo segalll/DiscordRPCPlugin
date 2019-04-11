@@ -51,7 +51,7 @@ DiscordRPCPlugin::GameState DiscordRPCPlugin::GetCurrentGameType() {
 }
 
 void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time(0), int64_t endTime = NULL, bool prevOvertime = false, int localPlayerTeam = 0) {
-	if (!cvarManager->getCvar("enableRPC").getBoolValue()) return;
+	if (!cvarManager->getCvar("rpc_enabled").getBoolValue()) return;
 
 	DiscordRPCPlugin::GameState gameState = GetCurrentGameType();
 	string details;
@@ -69,7 +69,7 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 		details = "On main menu";
 	}
 	if (!gameState.wrapper.IsNull()) {
-		if (gameState.name == "online" && cvarManager->getCvar("showOnlineGames").getBoolValue()) {
+		if (gameState.name == "online" && cvarManager->getCvar("rpc_show_online_games").getBoolValue()) {
 			GameSettingPlaylistWrapper playlistWrapper = gameState.wrapper.GetPlaylist();
 			string teamSize = to_string(gameState.wrapper.GetMaxTeamSize());
 			string gameType;
@@ -142,7 +142,7 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 				}
 			}
 		}
-		else if (gameState.name == "replay" && cvarManager->getCvar("showReplayViewing").getBoolValue()) {
+		else if (gameState.name == "replay" && cvarManager->getCvar("rpc_show_replays").getBoolValue()) {
 			details = "hi";
 			GameSettingPlaylistWrapper playlistWrapper = gameState.wrapper.GetPlaylist();
 			string teamSize = to_string(gameState.wrapper.GetMaxTeamSize());
@@ -177,10 +177,10 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 				}
 			}
 		}
-		else if (gameState.name == "freeplay" && cvarManager->getCvar("showFreeplay").getBoolValue()) {
+		else if (gameState.name == "freeplay" && cvarManager->getCvar("rpc_show_freeplay").getBoolValue()) {
 			details = "In freeplay";
 		}
-		else if (gameState.name == "training" && cvarManager->getCvar("showCustomTraining").getBoolValue()) {
+		else if (gameState.name == "training" && cvarManager->getCvar("rpc_show_training").getBoolValue()) {
 			TrainingEditorWrapper tew = gameState.wrapper.memory_address;
 			TrainingEditorSaveDataWrapper tesdw = tew.GetTrainingData().GetTrainingData();
 			int currentShot = tew.GetActiveRoundNumber() + 1;
@@ -188,7 +188,7 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 			details = "In custom training";
 			hover = currentName + " (Shot " + to_string(currentShot) + "/" + to_string(tew.GetTotalRounds()) + ")";
 		}
-		else if (gameState.name == "spectate" && cvarManager->getCvar("showOnlineSpectating").getBoolValue()) {
+		else if (gameState.name == "spectate" && cvarManager->getCvar("rpc_show_spectating").getBoolValue()) {
 			GameSettingPlaylistWrapper playlistWrapper = gameState.wrapper.GetPlaylist();
 			string teamSize = to_string(gameState.wrapper.GetMaxTeamSize());
 			if (playlistWrapper.GetbRanked()) {
@@ -241,7 +241,7 @@ void DiscordRPCPlugin::updateRPC(string prevCheck = "", int64_t startTime = time
 
 void DiscordRPCPlugin::OnEnableChange(string eventName) {
 	cvarManager->log(string("OnEnableChange") + eventName);
-	bool enabled = cvarManager->getCvar("enableRPC").getBoolValue();
+	bool enabled = cvarManager->getCvar("rpc_enabled").getBoolValue();
 	if (enabled) {
 		discordInit();
 	}
@@ -252,12 +252,12 @@ void DiscordRPCPlugin::OnEnableChange(string eventName) {
 
 void DiscordRPCPlugin::onLoad()
 {
-	cvarManager->registerCvar("enableRPC", "1", "Enable Discord RPC").addOnValueChanged(bind(&DiscordRPCPlugin::OnEnableChange, this, placeholders::_1));
-	cvarManager->registerCvar("showOnlineGames", "1", "Should show online games in Rich Presence");
-	cvarManager->registerCvar("showReplayViewing", "1", "Should show replay viewing in Rich Presence");
-	cvarManager->registerCvar("showFreeplay", "1", "Should show freeplay in Rich Presence");
-	cvarManager->registerCvar("showCustomTraining", "1", "Should show custom training in Rich Presence");
-	cvarManager->registerCvar("showOnlineSpectating", "1", "Should show spectating online games in Rich Presence");
+	cvarManager->registerCvar("rpc_enabled", "1", "Enable Discord RPC").addOnValueChanged(bind(&DiscordRPCPlugin::OnEnableChange, this, placeholders::_1));
+	cvarManager->registerCvar("rpc_show_online_games", "1", "Should show online games in Rich Presence");
+	cvarManager->registerCvar("rpc_show_replays", "1", "Should show replay viewing in Rich Presence");
+	cvarManager->registerCvar("rpc_show_freeplay", "1", "Should show freeplay in Rich Presence");
+	cvarManager->registerCvar("rpc_show_training", "1", "Should show custom training in Rich Presence");
+	cvarManager->registerCvar("rpc_show_spectating", "1", "Should show spectating online games in Rich Presence");
 	discordInit();
 	updateRPC();
 }
