@@ -162,8 +162,6 @@ Data DiscordRPCPlugin::HandleOnlineGame(Data input, GameState gameState) {
 			if (!gameState.wrapper.GetbUnlimitedTime()) {
 				output.start = time(0);
 				output.end = output.start + gameState.wrapper.GetSecondsRemaining();
-				cvarManager->log("Input: " + to_string(input.end - input.start));
-				cvarManager->log("Output: " + to_string(output.end - output.start));
 			}
 		}
 	}
