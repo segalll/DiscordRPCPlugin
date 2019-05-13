@@ -6,7 +6,7 @@
 #include "bakkesmod\wrappers\GameEvent\TrainingEditorWrapper.h"
 #include "bakkesmod\wrappers\GameEvent\SaveData\TrainingEditorSaveDataWrapper.h"
 #include "bakkesmod\wrappers\GameEvent\GameEventWrapper.h"
-#include "time.h"
+#include <ctime>
 
 BAKKESMOD_PLUGIN(DiscordRPCPlugin, "Discord Rich Presence Integration", "1.0", PLUGINTYPE_THREADED)
 
