@@ -56,62 +56,70 @@ GameState DiscordRPCPlugin::GetCurrentGameType() {
 	}
 }
 
+string GetPlaylistName(int playlistId, int teamSize) {
+	string size = to_string(teamSize);
+	switch (playlistId) {
+		case(1):
+			return "Casual Duel";
+			break;
+		case(2):
+			return "Casual Doubles";
+			break;
+		case(3):
+			return "Casual Standard";
+			break;
+		case(4):
+			return "Casual Chaos";
+			break;
+		case(6):
+			return "Private " + size + "v" + size;
+			break;
+		case(10):
+			return "Ranked Duel";
+			break;
+		case(11):
+			return "Ranked Doubles";
+			break;
+		case(12):
+			return "Ranked Solo Standard";
+			break;
+		case(13):
+			return "Ranked Standard";
+			break;
+		case(14):
+			return "Mutator Mashup";
+			break;
+		case(22):
+			return "Tournament " + size + "v" + size;
+			break;
+		case(27):
+			return "Ranked Hoops";
+			break;
+		case(28):
+			return "Ranked Rumble";
+			break;
+		case(29):
+			return "Ranked Dropshot";
+			break;
+		case(30):
+			return "Ranked Snowday";
+			break;
+		default:
+			return "";
+			break;
+	}
+}
+
 Data DiscordRPCPlugin::HandleOnlineGame(Data input, GameState gameState) {
 	Data output = input;
+	
 	GameSettingPlaylistWrapper playlistWrapper = gameState.wrapper.GetPlaylist();
-	string teamSize = to_string(gameState.wrapper.GetMaxTeamSize());
-	string gameType;
+	string gameType = GetPlaylistName(playlistWrapper.GetPlaylistId(), gameState.wrapper.GetMaxTeamSize());
+	
 	int teamGoals[2] = { 0, 0 };
 	if (!gameState.wrapper.GetTeams().Get(0).IsNull() && !gameState.wrapper.GetTeams().Get(1).IsNull()) {
 		teamGoals[0] = gameState.wrapper.GetTeams().Get(0).GetScore();
 		teamGoals[1] = gameState.wrapper.GetTeams().Get(1).GetScore();
-	}
-	switch (playlistWrapper.GetPlaylistId()) {
-		case(1):
-			gameType = "Casual Duel";
-			break;
-		case(2):
-			gameType = "Casual Doubles";
-			break;
-		case(3):
-			gameType = "Casual Standard";
-			break;
-		case(4):
-			gameType = "Casual Chaos";
-			break;
-		case(6):
-			gameType = "Private " + teamSize + "v" + teamSize;
-			break;
-		case(10):
-			gameType = "Ranked Duel";
-			break;
-		case(11):
-			gameType = "Ranked Doubles";
-			break;
-		case(12):
-			gameType = "Ranked Solo Standard";
-			break;
-		case(13):
-			gameType = "Ranked Standard";
-			break;
-		case(14):
-			gameType = "Mutator Mashup";
-			break;
-		case(22):
-			gameType = "Tournament " + teamSize + "v" + teamSize;
-			break;
-		case(27):
-			gameType = "Ranked Hoops";
-			break;
-		case(28):
-			gameType = "Ranked Rumble";
-			break;
-		case(29):
-			gameType = "Ranked Dropshot";
-			break;
-		case(30):
-			gameType = "Ranked Snowday";
-			break;
 	}
 	CarWrapper localPlayer = gameWrapper->GetLocalCar();
 	if (!localPlayer.IsNull()) {
@@ -127,6 +135,7 @@ Data DiscordRPCPlugin::HandleOnlineGame(Data input, GameState gameState) {
 		enemyGoals = to_string(teamGoals[0]);
 		plyGoals = to_string(teamGoals[1]);
 	}
+	
 	if (gameState.wrapper.GetbMatchEnded()) {
 		output.details = "In " + gameType + " lobby";
 		output.start = NULL;
@@ -172,23 +181,18 @@ Data DiscordRPCPlugin::HandleOnlineGame(Data input, GameState gameState) {
 
 Data DiscordRPCPlugin::HandleReplay(Data input, GameState gameState) {
 	Data output = input;
+	
 	GameSettingPlaylistWrapper playlistWrapper = gameState.wrapper.GetPlaylist();
-	string teamSize = to_string(gameState.wrapper.GetMaxTeamSize());
-	if (playlistWrapper.GetbRanked()) {
-		output.details = "Watching Ranked " + teamSize + "v" + teamSize;
-	}
-	else if (playlistWrapper.IsPrivateMatch()) {
-		output.details = "Watching Private " + teamSize + "v" + teamSize;
-	}
-	else if (playlistWrapper.GetbStandard()) {
-		output.details = "Watching Casual " + teamSize + "v" + teamSize;
-	}
+	string gameType = GetPlaylistName(playlistWrapper.GetPlaylistId(), gameState.wrapper.GetMaxTeamSize());
+	
 	int teamGoals[2] = { 0, 0 };
 	if (!gameState.wrapper.GetTeams().Get(0).IsNull() && !gameState.wrapper.GetTeams().Get(1).IsNull()) {
 		teamGoals[0] = gameState.wrapper.GetTeams().Get(0).GetScore();
 		teamGoals[1] = gameState.wrapper.GetTeams().Get(1).GetScore();
 	}
 	output.state = "(Blue) " + to_string(teamGoals[0]) + " - " + to_string(teamGoals[1]) + " (Red)";
+	
+	output.details = "Watching " + gameType;
 
 	if (gameState.wrapper.GetbOverTime()) {
 		output.end = NULL;
@@ -228,24 +232,18 @@ Data DiscordRPCPlugin::HandleTraining(Data input, GameState gameState) {
 
 Data DiscordRPCPlugin::HandleSpectate(Data input, GameState gameState) {
 	Data output = input;
+	
 	GameSettingPlaylistWrapper playlistWrapper = gameState.wrapper.GetPlaylist();
-	string teamSize = to_string(gameState.wrapper.GetMaxTeamSize());
-	if (playlistWrapper.GetbRanked()) {
-		output.details = "Spectating Ranked " + teamSize + "v" + teamSize;
-	}
-	else if (playlistWrapper.IsPrivateMatch()) {
-		output.details = "Spectating Private " + teamSize + "v" + teamSize;
-	}
-	else if (playlistWrapper.GetbStandard()) {
-		output.details = "Spectating Casual " + teamSize + "v" + teamSize;
-	}
-
+	string gameType = GetPlaylistName(playlistWrapper.GetPlaylistId(), gameState.wrapper.GetMaxTeamSize());
+	
 	int teamGoals[2] = { 0, 0 };
 	if (!gameState.wrapper.GetTeams().Get(0).IsNull() && !gameState.wrapper.GetTeams().Get(1).IsNull()) {
 		teamGoals[0] = gameState.wrapper.GetTeams().Get(0).GetScore();
 		teamGoals[1] = gameState.wrapper.GetTeams().Get(1).GetScore();
 	}
 	output.state = "(Blue) " + to_string(teamGoals[0]) + " - " + to_string(teamGoals[1]) + " (Red)";
+	
+	output.details = "Watching " + gameType;
 
 	if (gameState.wrapper.GetbOverTime()) {
 		output.end = NULL;
