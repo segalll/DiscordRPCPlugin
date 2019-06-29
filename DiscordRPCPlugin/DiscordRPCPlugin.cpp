@@ -187,7 +187,10 @@ Data DiscordRPCPlugin::HandleReplay(Data input, GameState gameState) {
 	Data output = input;
 	
 	GameSettingPlaylistWrapper playlistWrapper = gameState.wrapper.GetPlaylist();
-	string gameType = GetPlaylistName(playlistWrapper.GetPlaylistId(), gameState.wrapper.GetMaxTeamSize());
+	string gameType;
+	if (playlistWrapper.memory_address != NULL) {
+		gameType = GetPlaylistName(playlistWrapper.GetPlaylistId(), gameState.wrapper.GetMaxTeamSize());
+	}
 	
 	int teamGoals[2] = { 0, 0 };
 	if (!gameState.wrapper.GetTeams().Get(0).IsNull() && !gameState.wrapper.GetTeams().Get(1).IsNull()) {
@@ -238,7 +241,10 @@ Data DiscordRPCPlugin::HandleSpectate(Data input, GameState gameState) {
 	Data output = input;
 	
 	GameSettingPlaylistWrapper playlistWrapper = gameState.wrapper.GetPlaylist();
-	string gameType = GetPlaylistName(playlistWrapper.GetPlaylistId(), gameState.wrapper.GetMaxTeamSize());
+	string gameType;
+	if (playlistWrapper.memory_address != NULL) {
+		gameType = GetPlaylistName(playlistWrapper.GetPlaylistId(), gameState.wrapper.GetMaxTeamSize());
+	}
 	
 	int teamGoals[2] = { 0, 0 };
 	if (!gameState.wrapper.GetTeams().Get(0).IsNull() && !gameState.wrapper.GetTeams().Get(1).IsNull()) {
