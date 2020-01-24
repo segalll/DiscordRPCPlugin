@@ -7,6 +7,7 @@
 #include "bakkesmod\wrappers\GameEvent\SaveData\TrainingEditorSaveDataWrapper.h"
 #include "bakkesmod\wrappers\GameEvent\GameEventWrapper.h"
 #include <ctime>
+#include <algorithm>
 
 BAKKESMOD_PLUGIN(DiscordRPCPlugin, "Discord Rich Presence Integration", "1.0", PLUGINTYPE_THREADED)
 
@@ -110,6 +111,137 @@ string GetPlaylistName(int playlistId, int teamSize) {
 	}
 }
 
+string GetRank(int tierID) {
+	switch (tierID) {
+		case(0):
+			return "Unranked";
+			break;
+		case(1):
+			return "Bronze 1";
+			break;
+		case(2):
+			return "Bronze 2";
+			break;
+		case(3):
+			return "Bronze 3";
+			break;
+		case(4):
+			return "Silver 1";
+			break;
+		case(5):
+			return "Silver 2";
+			break;
+		case(6):
+			return "Silver 3";
+			break;
+		case(7):
+			return "Gold 1";
+			break;
+		case(8):
+			return "Gold 2";
+			break;
+		case(9):
+			return "Gold 3";
+			break;
+		case(10):
+			return "Platinum 1";
+			break;
+		case(11):
+			return "Platinum 2";
+			break;
+		case(12):
+			return "Platinum 3";
+			break;
+		case(13):
+			return "Diamond 1";
+			break;
+		case(14):
+			return "Diamond 2";
+			break;
+		case(15):
+			return "Diamond 3";
+			break;
+		case(16):
+			return "Champion 1";
+			break;
+		case(17):
+			return "Champion 2";
+			break;
+		case(18):
+			return "Champion 3";
+			break;
+		case(19):
+			return "Grand Champion";
+			break;
+		default:
+			return "";
+			break;
+	}
+}
+
+string GetMap(string mapName) {
+	transform(mapName.begin(), mapName.end(), mapName.begin(), ::tolower);
+	if (mapName == "arc_p") return "ARCtagon";
+	else if (mapName == "arc_standard_p") return "Starbase ARC";
+	else if (mapName == "beach_p") return "Salty Shores";
+	else if (mapName == "beach_night_p") return "Salty Shores (Night)";
+	else if (mapName == "cs_day_p") return "Champions Field (Day)";
+	else if (mapName == "cs_hw_p") return "Rivals Arena";
+	else if (mapName == "cs_p") return "Champions Field";
+	else if (mapName == "eurostadium_night_p") return "Mannfield (Night)";
+	else if (mapName == "eurostadium_p") return "Mannfield";
+	else if (mapName == "eurostadium_rainy_p") return "Mannfield (Stormy)";
+	else if (mapName == "eurostadium_snownight_p") return "Mannfield (Snowy)";
+	else if (mapName == "farm_p") return "Farmstead";
+	else if (mapName == "farm_night_p") return "Farmstead (Night)";
+	else if (mapName == "farm_upsidedown_p") return "Farmstead (The Upside Down)";
+	else if (mapName == "hoopsstadium_p") return "Dunk House";
+	else if (mapName == "labs_circlepillars_p") return "Pillars";
+	else if (mapName == "labs_cosmic_p") return "Cosmic (Old)";
+	else if (mapName == "labs_cosmic_v4_p") return "Cosmic";
+	else if (mapName == "labs_doublegoal_p") return "Double Goal (Old)";
+	else if (mapName == "labs_doublegoal_v2_p") return "Double Goal";
+	else if (mapName == "labs_octagon_02_p") return "Octagon";
+	else if (mapName == "labs_octagon_p") return "Octagon (Old)";
+	else if (mapName == "labs_underpass_p") return "Underpass (Old)";
+	else if (mapName == "labs_underpass_v0_p") return "Underpass";
+	else if (mapName == "labs_utopia_p") return "Utopia Retro";
+	else if (mapName == "neotokyo_p") return "Tokyo Underpass";
+	else if (mapName == "neotokyo_standard_p") return "Neo Tokyo";
+	else if (mapName == "park_night_p") return "Beckwith Park (Midnight)";
+	else if (mapName == "park_p") return "Beckwith Park";
+	else if (mapName == "park_rainy_p") return "Beckwith Park (Stormy)";
+	else if (mapName == "shattershot_p") return "Core 707";
+	else if (mapName == "stadium_day_p") return "DFH Stadium (Day)";
+	else if (mapName == "stadium_foggy_p") return "DFH Stadium (Stormy)";
+	else if (mapName == "stadium_p") return "DFH Stadium";
+	else if (mapName == "stadium_winter_p") return "DFH Stadium (Snowy)";
+	else if (mapName == "throwbackstadium_p") return "Throwback Stadium";
+	else if (mapName == "trainstation_dawn_p") return "Urban Central (Dawn)";
+	else if (mapName == "trainstation_night_p") return "Urban Central (Night)";
+	else if (mapName == "trainstation_p") return "Urban Central";
+	else if (mapName == "haunted_trainstation_p") return "Urban Central (Haunted)";
+	else if (mapName == "underwater_p") return "AquaDome";
+	else if (mapName == "utopiastadium_dusk_p") return "Utopia Coliseum (Dusk)";
+	else if (mapName == "utopiastadium_p") return "Utopia Coliseum";
+	else if (mapName == "utopiastadium_snow_p") return "Utopia Coliseum (Snowy)";
+	else if (mapName == "wasteland_night_p") return "Badlands (Night)";
+	else if (mapName == "wasteland_night_s_p") return "Wasteland (Night)";
+	else if (mapName == "wasteland_p") return "Badlands";
+	else if (mapName == "wasteland_s_p") return "Wasteland";
+	else return "logo";
+}
+
+string FormatMap(string map) {
+	transform(map.begin(), map.end(), map.begin(), ::tolower);
+	transform(map.begin(), map.end(), map.begin(), [](char ch) {
+		return ch == ' ' ? '-' : ch;
+	});
+	map.erase(remove(map.begin(), map.end(), '('), map.end());
+	map.erase(remove(map.begin(), map.end(), ')'), map.end());
+	return map;
+}
+
 Data DiscordRPCPlugin::HandleOnlineGame(Data input, GameState gameState) {
 	Data output = input;
 	
@@ -129,6 +261,23 @@ Data DiscordRPCPlugin::HandleOnlineGame(Data input, GameState gameState) {
 	if (!localPlayer.IsNull()) {
 		output.team = localPlayer.GetPRI().GetTeamNum();
 	}
+	if (gameType.find("Ranked") != string::npos) {
+		if (!localPlayer.IsNull() && playlistWrapper.memory_address != NULL) {
+			SteamID playerID = localPlayer.GetPRI().GetUniqueId();
+			int playlistID = playlistWrapper.GetPlaylistId();
+			MMRWrapper mmrWrapper = gameWrapper->GetMMRWrapper();
+			SkillRank rank = mmrWrapper.GetPlayerRank(playerID, playlistID);
+			float mmr = mmrWrapper.GetPlayerMMR(playerID, playlistID);
+			string rankStr = GetRank(rank.Tier);
+			if (rankStr.length() > 0) {
+				output.smallHover = rankStr + " (MMR: " + to_string((int) mmr) + ")";
+				transform(rankStr.begin(), rankStr.end(), rankStr.begin(), ::tolower);
+				rankStr.erase(remove_if(rankStr.begin(), rankStr.end(), ::isspace), rankStr.end());
+				output.smallImage = rankStr;
+			}
+		}
+	}
+
 	string plyGoals;
 	string enemyGoals;
 	if (output.team == 0) {
@@ -143,7 +292,7 @@ Data DiscordRPCPlugin::HandleOnlineGame(Data input, GameState gameState) {
 	if (gameState.wrapper.GetbMatchEnded()) {
 		output.details = "In " + gameType + " lobby";
 		output.start = NULL;
-		output.end = NULL;
+		output.remaining = NULL;
 		if (plyGoals > enemyGoals) {
 			output.state = "Won ";
 		}
@@ -166,7 +315,7 @@ Data DiscordRPCPlugin::HandleOnlineGame(Data input, GameState gameState) {
 		output.state += plyGoals + " - " + enemyGoals;
 
 		if (gameState.wrapper.GetbOverTime()) {
-			output.end = NULL;
+			output.remaining = NULL;
 			if (!input.overtime) {
 				output.overtime = true;
 				output.start = time(0);
@@ -175,11 +324,13 @@ Data DiscordRPCPlugin::HandleOnlineGame(Data input, GameState gameState) {
 		}
 		else {
 			if (!gameState.wrapper.GetbUnlimitedTime()) {
-				output.start = time(0);
-				output.end = output.start + gameState.wrapper.GetSecondsRemaining();
+				output.remaining = gameState.wrapper.GetSecondsRemaining() + 1;
 			}
 		}
 	}
+	string map = GetMap(gameWrapper->GetCurrentMap());
+	output.hover = map;
+	output.image = FormatMap(map);
 	return output;
 }
 
@@ -202,7 +353,7 @@ Data DiscordRPCPlugin::HandleReplay(Data input, GameState gameState) {
 	output.details = "Watching " + gameType;
 
 	if (gameState.wrapper.GetbOverTime()) {
-		output.end = NULL;
+		output.remaining = NULL;
 		if (!input.overtime) {
 			output.overtime = true;
 			output.start = time(0);
@@ -212,15 +363,26 @@ Data DiscordRPCPlugin::HandleReplay(Data input, GameState gameState) {
 	else {
 		if (!gameState.wrapper.GetbUnlimitedTime()) {
 			output.start = time(0);
-			output.end = output.start + gameState.wrapper.GetSecondsRemaining();
+			output.remaining = output.start + gameState.wrapper.GetSecondsRemaining();
 		}
 	}
+
+	string map = GetMap(gameWrapper->GetCurrentMap());
+	output.hover = map;
+	output.image = FormatMap(map);
+
 	return output;
 }
 
 Data DiscordRPCPlugin::HandleFreeplay(Data input, GameState gameState) {
 	Data output = input;
+
 	output.details = "In freeplay";
+
+	string map = GetMap(gameWrapper->GetCurrentMap());
+	output.hover = map;
+	output.image = FormatMap(map);
+
 	return output;
 }
 
@@ -232,8 +394,13 @@ Data DiscordRPCPlugin::HandleTraining(Data input, GameState gameState) {
 			int currentShot = tew.GetActiveRoundNumber() + 1;
 			string currentName = Capitalize(tesdw.GetTM_Name().ToString());
 			output.details = "In custom training";
-			output.hover = currentName + " (Shot " + to_string(currentShot) + "/" + to_string(tew.GetTotalRounds()) + ")";
+			output.state = currentName + " (Shot " + to_string(currentShot) + "/" + to_string(tew.GetTotalRounds()) + ")";
 	}
+
+	string map = GetMap(gameWrapper->GetCurrentMap());
+	output.hover = map;
+	output.image = FormatMap(map);
+
 	return output;
 }
 
@@ -256,7 +423,7 @@ Data DiscordRPCPlugin::HandleSpectate(Data input, GameState gameState) {
 	output.details = "Watching " + gameType;
 
 	if (gameState.wrapper.GetbOverTime()) {
-		output.end = NULL;
+		output.remaining = NULL;
 		if (!input.overtime) {
 			output.overtime = true;
 			output.start = time(0);
@@ -265,10 +432,14 @@ Data DiscordRPCPlugin::HandleSpectate(Data input, GameState gameState) {
 	}
 	else {
 		if (!gameState.wrapper.GetbUnlimitedTime()) {
-			output.start = time(0);
-			output.end = output.start + gameState.wrapper.GetSecondsRemaining();
+			output.remaining = gameState.wrapper.GetSecondsRemaining() + 1;
 		}
 	}
+
+	string map = GetMap(gameWrapper->GetCurrentMap());
+	output.hover = map;
+	output.image = FormatMap(map);
+
 	return output;
 }
 void DiscordRPCPlugin::CheckGameType(Data input) {
@@ -278,12 +449,15 @@ void DiscordRPCPlugin::CheckGameType(Data input) {
 	if (input.type != gameState.type) {
 		output.type = gameState.type;
 		output.start = time(0);
-		output.end = NULL;
+		output.remaining = NULL;
 	}
 	if (gameState.type == GAMETYPE_MENU) {
 		output.details = "On main menu";
 		output.state = "";
+		output.image = "logo";
 		output.hover = "";
+		output.smallImage = "";
+		output.smallHover = "";
 	}
 	if (!gameState.wrapper.IsNull()) {
 		switch (gameState.type) {
@@ -326,18 +500,28 @@ void DiscordRPCPlugin::CheckGameType(Data input) {
 void DiscordRPCPlugin::updateRPC(Data input) {
 	char detailBuffer[128];
 	char stateBuffer[128];
+	char imageBuffer[128];
 	char hoverBuffer[128];
+	char smallImageBuffer[128];
+	char smallHoverBuffer[128];
 	strcpy_s(detailBuffer, input.details.c_str());
 	strcpy_s(stateBuffer, input.state.c_str());
+	strcpy_s(imageBuffer, input.image.c_str());
 	strcpy_s(hoverBuffer, input.hover.c_str());
+	strcpy_s(smallImageBuffer, input.smallImage.c_str());
+	strcpy_s(smallHoverBuffer, input.smallHover.c_str());
 	DiscordRichPresence discordPresence;
 	memset(&discordPresence, 0, sizeof(discordPresence));
 	discordPresence.state = stateBuffer;
 	discordPresence.details = detailBuffer;
 	discordPresence.startTimestamp = input.start;
-	discordPresence.endTimestamp = input.end;
-	discordPresence.largeImageKey = "logo";
+	if (input.remaining != NULL) {
+		discordPresence.endTimestamp = time(0) + input.remaining;
+	}
+	discordPresence.largeImageKey = imageBuffer;
 	discordPresence.largeImageText = hoverBuffer;
+	discordPresence.smallImageKey = smallImageBuffer;
+	discordPresence.smallImageText = smallHoverBuffer;
 	Discord_UpdatePresence(&discordPresence);
 	gameWrapper->SetTimeout(bind(&DiscordRPCPlugin::CheckGameType, this, input), 1.0f);
 }
@@ -362,7 +546,19 @@ void DiscordRPCPlugin::onLoad()
 	cvarManager->registerCvar("rpc_show_training", "1", "Should show custom training in Rich Presence");
 	cvarManager->registerCvar("rpc_show_spectating", "1", "Should show spectating online games in Rich Presence");
 	discordInit();
-	Data input = {6, time(0), NULL, false, 0, "", "", ""}; //int type; int64_t start; int64_t end; bool overtime; int team; string details; string state; string hover;
+	Data input = {
+		-1, // int type
+		time(0), // int64_t start
+		NULL, // int64_t remaining
+		false, // bool overtime
+		0, // int team
+		"", // string details
+		"", // string state
+		"", // string image
+		"", // string hover
+		"", // string smallImage
+		"" // string smallHover
+	};
 	CheckGameType(input);
 }
 

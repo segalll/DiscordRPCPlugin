@@ -12,12 +12,15 @@ struct GameState {
 struct Data {
 	int type;
 	int64_t start;
-	int64_t end;
+	int64_t remaining;
 	bool overtime;
 	int team;
 	string details;
 	string state;
+	string image;
 	string hover;
+	string smallImage;
+	string smallHover;
 };
 
 class DiscordRPCPlugin : public BakkesMod::Plugin::BakkesModPlugin
