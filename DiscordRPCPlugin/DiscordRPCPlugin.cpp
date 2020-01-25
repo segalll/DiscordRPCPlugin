@@ -9,7 +9,7 @@
 #include <ctime>
 #include <algorithm>
 
-BAKKESMOD_PLUGIN(DiscordRPCPlugin, "Discord Rich Presence Integration", "1.0", PLUGINTYPE_THREADED)
+BAKKESMOD_PLUGIN(DiscordRPCPlugin, "Discord Rich Presence Integration", "1.0", PLUGINTYPE_FREEPLAY)
 
 static const char* APPLICATION_ID = "562098317547405322";
 
