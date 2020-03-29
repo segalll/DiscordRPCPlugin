@@ -23,5 +23,5 @@ Custom plugin for BakkesMod that integrates Discord Rich Presence into Rocket Le
 
 ## Modifying
 
-If you are going to modify and compile on your own, keep in mind this requires the win32-static [discord-rpc SDK](https://github.com/discordapp/discord-rpc/releases).
+If you are going to modify and compile on your own, keep in mind this requires the discord-rpc SDK in the dependencies folder, modified from the win64-static [discord-rpc SDK](https://github.com/discordapp/discord-rpc/releases).
 You should also change the include and lib locations to point to the BakkesMod SDK and discord-rpc SDK.
