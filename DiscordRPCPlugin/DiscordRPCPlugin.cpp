@@ -9,7 +9,7 @@
 #include <ctime>
 #include <algorithm>
 
-BAKKESMOD_PLUGIN(DiscordRPCPlugin, "Discord Rich Presence Integration", "1.0", PLUGINTYPE_THREADED)
+BAKKESMOD_PLUGIN(DiscordRPCPlugin, "Discord Rich Presence Integration", "1.0", PLUGINTYPE_FREEPLAY)
 
 static const char* APPLICATION_ID = "562098317547405322";
 
@@ -185,6 +185,7 @@ string GetMap(string mapName) {
 	else if (mapName == "arc_standard_p") return "Starbase ARC";
 	else if (mapName == "beach_p") return "Salty Shores";
 	else if (mapName == "beach_night_p") return "Salty Shores (Night)";
+	else if (mapName == "chn_stadium_p") return "Forbidden Temple";
 	else if (mapName == "cs_day_p") return "Champions Field (Day)";
 	else if (mapName == "cs_hw_p") return "Rivals Arena";
 	else if (mapName == "cs_p") return "Champions Field";
