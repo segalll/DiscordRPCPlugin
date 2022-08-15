@@ -1,8 +1,0 @@
-Discord RPC plugin
-9|This plugin adds Discord Rich Presence functionality to Rocket League
-1|Enable Rich Presence|rpc_enabled
-1|Show online games in Rich Presence|rpc_show_online_games
-1|Show replay viewing in Rich Presence|rpc_show_replays
-1|Show freeplay in Rich Presence|rpc_show_freeplay
-1|Show custom training in Rich Presence|rpc_show_training
-1|Show spectating of online games in Rich Presence|rpc_show_spectating
