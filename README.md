@@ -12,6 +12,8 @@ https://bakkesplugins.com/plugins/view/21
 
 Make sure to follow the initial setup instructions or else this plugin will not work for Steam users. A button to open the instructions is located in the plugin settings (F2 -> Plugins -> DiscordRPCPlugin)
 
+Essentially, the dummy discord_game_sdk.dll needs to replace the original in the Rocket League binary folder. I recommend saving the original just in case.
+
 ## Console Variables
 
 **drpc_enabled 1|0** - Enable Discord RPC (Default: 1)
