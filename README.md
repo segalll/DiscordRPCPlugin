@@ -1,4 +1,7 @@
 # DiscordRPCPlugin
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 Custom plugin for BakkesMod that integrates Discord Rich Presence into Rocket League.
 
 https://bakkesplugins.com/plugins/view/21
@@ -11,6 +14,14 @@ https://bakkesplugins.com/plugins/view/21
 ## Initial Setup
 
 Make sure to follow the initial setup instructions or else this plugin will not work for Steam users. A button to open the instructions is located in the plugin settings (F2 -> Plugins -> DiscordRPCPlugin)
+
+Essentially, the dummy `discord_game_sdk.dll` needs to replace the original in the Rocket League binary folder. I recommend saving the original just in case. I believe the dummy `discord_game_sdk.dll` is in `C:\Users\<your user>\AppData\Roaming\bakkesmod\bakkesmod\data\DiscordRPCPlugin\dlls`.
+
+Also, this plugin may be blacklisted from loading by Bakkesmod because I left it unupdated, causing it to crash on new maps. If this is true, you will need to rename the DLL to something else and change the corresponding `plugin load` in `plugins.cfg` to account for this change.
+
+## Disclaimer
+
+This plugin may crash in new non-standard game modes due to not being updated to support them in a while.
 
 ## Console Variables
 
