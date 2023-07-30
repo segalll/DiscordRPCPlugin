@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32804.467
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiscordRPCPlugin", "DiscordRPCPlugin\DiscordRPCPlugin.vcxproj", "{C0A6DA0A-FF5B-42F2-BCE5-86D80ADF9407}"
+	ProjectSection(ProjectDependencies) = postProject
+		{41B56439-0B2F-4785-AF13-61A4DC0B4EB6} = {41B56439-0B2F-4785-AF13-61A4DC0B4EB6}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "discord_game_sdk", "discord_game_sdk\discord_game_sdk.vcxproj", "{364F0BB8-B1F6-48C8-80DC-5283316883DF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "discord-rpc", "discord-rpc\discord-rpc.vcxproj", "{41B56439-0B2F-4785-AF13-61A4DC0B4EB6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0A6DA0A-FF5B-42F2-BCE5-86D80ADF9407}.Release|x64.ActiveCfg = Release|x64
+		{C0A6DA0A-FF5B-42F2-BCE5-86D80ADF9407}.Release|x64.Build.0 = Release|x64
+		{364F0BB8-B1F6-48C8-80DC-5283316883DF}.Release|x64.ActiveCfg = Release|x64
+		{364F0BB8-B1F6-48C8-80DC-5283316883DF}.Release|x64.Build.0 = Release|x64
+		{41B56439-0B2F-4785-AF13-61A4DC0B4EB6}.Release|x64.ActiveCfg = Release|x64
+		{41B56439-0B2F-4785-AF13-61A4DC0B4EB6}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D7364EB-2793-4489-9900-D06FC51D8954}
+	EndGlobalSection
+EndGlobal
