@@ -32,8 +32,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <CustomBuildBeforeTargets>Build</CustomBuildBeforeTargets>
-    <NMakeBuildCommandLine>if not exist "build" mkdir build
-cd build
+    <NMakeBuildCommandLine>cd build
 set CMAKE="cmake.exe"
 if exist "$(DevEnvDir)CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" set CMAKE="$(DevEnvDir)CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"
 %CMAKE% $(SolutionDir)external\discord-rpc -DCMAKE_INSTALL_PREFIX="..\out" -DUSE_STATIC_CRT=ON

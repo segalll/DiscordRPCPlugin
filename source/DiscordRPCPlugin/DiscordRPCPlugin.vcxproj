@@ -82,7 +82,8 @@
       <AdditionalDependencies>discord-rpc.lib;pluginsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)external\BakkesModSDK\bakkesmod-patch.exe "$(TargetPath)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
