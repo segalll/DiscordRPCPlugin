@@ -1,0 +1,10 @@
+[submodule "source/external/imgui"]
+	path = source/external/imgui
+	url = https://github.com/ocornut/imgui
+	branch = 58b3e02b95b4c7c5bb9128a28c6d55546501bf93
+[submodule "source/external/BakkesModSDK"]
+	path = source/external/BakkesModSDK
+	url = https://github.com/bakkesmodorg/BakkesModSDK
+[submodule "source/external/fmt"]
+	path = source/external/fmt
+	url = https://github.com/fmtlib/fmt
