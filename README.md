@@ -1,4 +1,7 @@
 # DiscordRPCPlugin
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 Custom plugin for BakkesMod that integrates Discord Rich Presence into Rocket League.
 
 https://bakkesplugins.com/plugins/view/21
