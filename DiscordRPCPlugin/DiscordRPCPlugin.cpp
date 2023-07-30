@@ -53,7 +53,7 @@ void DiscordRPCPlugin::handleGame(ActivityData activityData) {
         gameType = getPlaylistName(playlistWrapper.GetPlaylistId(), activityData.wrapper.GetMaxTeamSize());
     }
 
-    if (gameType == "Training") {
+    if (gameType == "Training" || gameType == "Unknown") {
         handlePsyonixTraining(activityData);
         return;
     }

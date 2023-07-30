@@ -77,12 +77,12 @@ void DiscordRPCPlugin::Render() {
     }
 
     ImGui::Text("THIS IS NECESSARY FOR STEAM USERS ON INITIAL INSTALL OF THE PLUGIN\n\n\n");
-    ImGui::Text("Click the button below to open your bakkesmod dll folder. Copy discord_game_sdk.dll to your clipboard.");
+    ImGui::Text("Click the button below to open the data folder. Copy discord_game_sdk.dll in the DiscordRPCPlugin folder to your clipboard.");
     if (ImGui::Button("DLL folder")) {
         HMODULE b = GetModuleHandleA("bakkesmod.dll");
         char path[128];
         DWORD length = GetModuleFileNameA(b, path, 128);
-        path[length - 13] = '\0'; // remove bakkesmod.dll from path
+        strncpy(path + length - 17, "data", 5); // overwrite dll/bakkesmod.dll with data
         
         ShellExecuteA(NULL, "open", path, NULL, NULL, SW_SHOWDEFAULT);
     }

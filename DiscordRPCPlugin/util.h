@@ -172,8 +172,11 @@ std::string getPlaylistName(int playlistId, int teamSize) {
     if (playlistId == 49) { return "Spring Loaded"; }
     if (playlistId == 50) { return "Speed Demon"; }
     if (playlistId == 52) { return "Rumble BM"; } // idk what this is
+    if (playlistId == 54) { return "Knockout"; }
+    if (playlistId == 55) { return "confidential_thirdwheel_test"; }
+    if (playlistId == 62) { return "Magnus Futbal"; }
 
-    return "";
+    return "Unknown";
 }
 
 std::string capitalize(std::string s) {
