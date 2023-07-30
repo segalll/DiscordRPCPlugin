@@ -1,5 +1,6 @@
 # DiscordRPCPlugin
 
+[![Actions Status](https://github.com/segalll/DiscordRPCPlugin/workflows/build/badge.svg)](https://github.com/segalll/DiscordRPCPlugin/actions)
 [![Rocket Plugins](https://img.shields.io/badge/downloads-20k-blue)](https://bakkesplugins.com/plugins/view/21)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
