@@ -19,6 +19,10 @@ Essentially, the dummy `discord_game_sdk.dll` needs to replace the original in t
 
 Also, this plugin may be blacklisted from loading by Bakkesmod because I left it unupdated, causing it to crash on new maps. If this is true, you will need to rename the DLL to something else and change the corresponding `plugin load` in `plugins.cfg` to account for this change.
 
+## Disclaimer
+
+This plugin may crash in new non-standard game modes due to not being updated to support them in a while.
+
 ## Console Variables
 
 **drpc_enabled 1|0** - Enable Discord RPC (Default: 1)
