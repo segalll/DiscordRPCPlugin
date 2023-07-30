@@ -32,7 +32,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <CustomBuildBeforeTargets>Build</CustomBuildBeforeTargets>
-    <NMakeBuildCommandLine>cd build
+    <NMakeBuildCommandLine>mkdir build
+mkdir ../out
+cd build
 "$(DevEnvDir)CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" $(SolutionDir)external\discord-rpc -DCMAKE_INSTALL_PREFIX=../out -DUSE_STATIC_CRT=ON
 "$(DevEnvDir)CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --build . --config Release --target install</NMakeBuildCommandLine>
     <IntDir>$(ProjectDir)build\.intermediates\$(Configuration)\</IntDir>
