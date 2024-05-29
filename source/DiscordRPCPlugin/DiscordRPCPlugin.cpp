@@ -4,17 +4,16 @@
 #include "discord_rpc.h"
 #include "util.h"
 
-
 BAKKESMOD_PLUGIN(DiscordRPCPlugin, "Discord Rich Presence integration", plugin_version, PLUGINTYPE_FREEPLAY)
 
 void initDiscord() {
     DiscordEventHandlers handlers;
-    memset(&handlers, 0, sizeof(handlers));
+    ZeroMemory(&handlers, sizeof(handlers));
     Discord_Initialize(discord_application_id, &handlers, 0, nullptr);
 }
 
 void DiscordRPCPlugin::onEnableChange() {
-    if (enabled.get()) {
+    if (enabled) {
         initDiscord();
     } else {
         Discord_Shutdown();
@@ -24,13 +23,15 @@ void DiscordRPCPlugin::onEnableChange() {
 void DiscordRPCPlugin::setMatchTime(ServerWrapper wrapper) {
     if (wrapper.GetbOverTime()) {
         pd.remaining = 0;
+
         if (!pd.overtime) {
             pd.overtime = true;
-            pd.start = time(0);
+            pd.start = std::time(nullptr);
         }
+
         pd.state += " (OT)";
     } else if (!wrapper.GetbUnlimitedTime()) {
-        pd.remaining = wrapper.GetSecondsRemaining() + 1;
+        pd.remaining = (wrapper.GetSecondsRemaining() + 1);
     }
 }
 
@@ -47,29 +48,31 @@ void DiscordRPCPlugin::setMap() {
 
 void DiscordRPCPlugin::handleGame(ActivityData activityData) {
     auto playlistWrapper = activityData.wrapper.GetPlaylist();
-
     std::string gameType;
+
     if (playlistWrapper) {
         gameType = getPlaylistName(playlistWrapper.GetPlaylistId(), activityData.wrapper.GetMaxTeamSize());
     }
 
-    if (gameType == "Training" || gameType == "Unknown") {
+    if ((gameType == "Training") || (gameType == "Unknown")) {
         handlePsyonixTraining(activityData);
         return;
     }
 
     int teamGoals[2] = { 0, 0 };
+
     if (!activityData.wrapper.GetTeams().IsNull() && activityData.wrapper.GetTeams().Get(0) && activityData.wrapper.GetTeams().Get(1)) {
         teamGoals[0] = activityData.wrapper.GetTeams().Get(0).GetScore();
         teamGoals[1] = activityData.wrapper.GetTeams().Get(1).GetScore();
     }
 
     auto localPlayer = gameWrapper->GetLocalCar();
+
     if (localPlayer && localPlayer.GetPRI()) {
         pd.team = localPlayer.GetPRI().GetTeamNum();
     }
     
-    if (gameType.find("Ranked") != std::string::npos && localPlayer && playlistWrapper) {
+    if ((gameType.find("Ranked") != std::string::npos) && localPlayer && playlistWrapper) {
         auto uidWrapper = gameWrapper->GetUniqueID();
         int playlistId = playlistWrapper.GetPlaylistId();
 
@@ -78,13 +81,15 @@ void DiscordRPCPlugin::handleGame(ActivityData activityData) {
         float mmr = mmrWrapper.GetPlayerMMR(uidWrapper, playlistId);
 
         std::string rankStr = getRank(rank.Tier);
-        if (rankStr.size() > 0) {
+
+        if (!rankStr.empty()) {
             pd.smallImage = rankToImageKey(rankStr);
-            pd.smallHover = rankStr + " (MMR: " + std::to_string((int)mmr) + ")";
+            pd.smallHover = (rankStr + " (MMR: " + std::to_string((int)mmr) + ")");
         }
     }
 
     int plyGoals = 0, oppGoals = 0;
+
     if (pd.team == 0) {
         plyGoals = teamGoals[0];
         oppGoals = teamGoals[1];
@@ -94,7 +99,7 @@ void DiscordRPCPlugin::handleGame(ActivityData activityData) {
     }
 
     if (activityData.wrapper.GetbMatchEnded()) {
-        pd.details = "In " + gameType + " lobby";
+        pd.details = ("In " + gameType + " lobby");
         pd.start = 0;
         pd.remaining = 0;
         
@@ -103,7 +108,8 @@ void DiscordRPCPlugin::handleGame(ActivityData activityData) {
         } else {
             pd.state = "Lost ";
         }
-        pd.state += "(" + std::to_string(plyGoals) + " - " + std::to_string(oppGoals) + ")";
+
+        pd.state += ("(" + std::to_string(plyGoals) + " - " + std::to_string(oppGoals) + ")");
     } else {
         pd.details = "Playing " + gameType;
         if (plyGoals > oppGoals) {
@@ -113,8 +119,8 @@ void DiscordRPCPlugin::handleGame(ActivityData activityData) {
         } else {
             pd.state = "Tied ";
         }
-        pd.state += std::to_string(plyGoals) + " - " + std::to_string(oppGoals);
 
+        pd.state += (std::to_string(plyGoals) + " - " + std::to_string(oppGoals));
         setMatchTime(activityData.wrapper);
     }
 
@@ -123,8 +129,8 @@ void DiscordRPCPlugin::handleGame(ActivityData activityData) {
 
 void DiscordRPCPlugin::handleReplay(ActivityData activityData) {
     auto playlistWrapper = activityData.wrapper.GetPlaylist();
-
     std::string gameType;
+
     if (playlistWrapper) {
         gameType = getPlaylistName(playlistWrapper.GetPlaylistId(), activityData.wrapper.GetMaxTeamSize());
     }
@@ -134,12 +140,11 @@ void DiscordRPCPlugin::handleReplay(ActivityData activityData) {
         teamGoals[0] = activityData.wrapper.GetTeams().Get(0).GetScore();
         teamGoals[1] = activityData.wrapper.GetTeams().Get(1).GetScore();
     }
-    pd.state = "(Blue) " + std::to_string(teamGoals[0]) + " - " + std::to_string(teamGoals[1]) + " (Red)";
 
-    pd.details = "Watching " + gameType;
+    pd.state = ("(Blue) " + std::to_string(teamGoals[0]) + " - " + std::to_string(teamGoals[1]) + " (Red)");
+    pd.details = ("Watching " + gameType);
 
     setMatchTime(activityData.wrapper);
-
     setMap();
 }
 
@@ -153,6 +158,7 @@ void DiscordRPCPlugin::handleFreeplay(ActivityData activityData) {
     setMap();
 
     auto playlistWrapper = activityData.wrapper.GetPlaylist();
+
     if (playlistWrapper && playlistWrapper.GetPlaylistId() == 19) {
         pd.details = "In workshop map";
         pd.hover = gameWrapper->GetCurrentMap();
@@ -161,44 +167,50 @@ void DiscordRPCPlugin::handleFreeplay(ActivityData activityData) {
 
 void DiscordRPCPlugin::handleCustomTraining(ActivityData activityData) {
     pd.details = "In custom training";
-
     setMap();
 
     TrainingEditorWrapper tew = activityData.wrapper.memory_address;
 
-    if (!tew) return;
+    if (!tew) {
+        return;
+    }
 
-    if (tew.GetTrainingFileName().ToString() != "") {
-        if (!tew.GetTrainingData() || !tew.GetTrainingData().GetTrainingData()) return;
+    if (!tew.GetTrainingFileName().ToString().empty()) {
+        if (!tew.GetTrainingData() || !tew.GetTrainingData().GetTrainingData()) {
+            return;
+        }
+
         auto tesdw = tew.GetTrainingData().GetTrainingData();
 
-        int currentShot = tew.GetActiveRoundNumber() + 1;
+        if (!tesdw) {
+            return;
+        }
 
+        int currentShot = (tew.GetActiveRoundNumber() + 1);
         std::string currentName = capitalize(tesdw.GetTM_Name().ToString());
-
-        pd.state = currentName + " (Shot " + std::to_string(currentShot) + "/" + std::to_string(tew.GetTotalRounds()) + ")";
+        pd.state = (currentName + " (Shot " + std::to_string(currentShot) + "/" + std::to_string(tew.GetTotalRounds()) + ")");
     }
 }
 
 void DiscordRPCPlugin::handleSpectate(ActivityData activityData) {
     auto playlistWrapper = activityData.wrapper.GetPlaylist();
-
     std::string gameType;
+
     if (playlistWrapper) {
         gameType = getPlaylistName(playlistWrapper.GetPlaylistId(), activityData.wrapper.GetMaxTeamSize());
     }
 
     int teamGoals[2] = { 0, 0 };
+
     if (!activityData.wrapper.GetTeams().IsNull() && activityData.wrapper.GetTeams().Get(0) && activityData.wrapper.GetTeams().Get(1)) {
         teamGoals[0] = activityData.wrapper.GetTeams().Get(0).GetScore();
         teamGoals[1] = activityData.wrapper.GetTeams().Get(1).GetScore();
     }
-    pd.state = "(Blue) " + std::to_string(teamGoals[0]) + " - " + std::to_string(teamGoals[1]) + " (Red)";
 
-    pd.details = "Watching " + gameType;
+    pd.state = ("(Blue) " + std::to_string(teamGoals[0]) + " - " + std::to_string(teamGoals[1]) + " (Red)");
+    pd.details = ("Watching " + gameType);
 
     setMatchTime(activityData.wrapper);
-
     setMap();
 }
 
@@ -233,13 +245,15 @@ ActivityData DiscordRPCPlugin::getCurrentActivityData() {
 }
 
 void DiscordRPCPlugin::checkActivity() {
-    if (!*enabled) return;
+    if (!*enabled) {
+        return;
+    }
 
     ActivityData activityData = getCurrentActivityData();
 
     if (pd.type != activityData.type) { // activity has changed
         pd.type = activityData.type;
-        pd.start = time(0); // current time
+        pd.start = std::time(nullptr); // current time
         pd.remaining = 0;
     }
 
@@ -263,22 +277,23 @@ void DiscordRPCPlugin::checkActivity() {
 }
 
 void DiscordRPCPlugin::updateRPC() {
-    DiscordRichPresence rp;
-    memset(&rp, 0, sizeof(rp));
+    DiscordRichPresence rpc;
+    ZeroMemory(&rpc, sizeof(rpc));
 
-    rp.state = pd.state.c_str();
-    rp.details = pd.details.c_str();
-    rp.startTimestamp = pd.start;
-    if (pd.remaining != 0) {
-        rp.endTimestamp = time(0) + pd.remaining;
+    rpc.state = pd.state.c_str();
+    rpc.details = pd.details.c_str();
+    rpc.startTimestamp = pd.start;
+
+    if (pd.remaining) {
+        rpc.endTimestamp = (std::time(nullptr) + pd.remaining);
     }
-    rp.largeImageKey = pd.image.c_str();
-    rp.largeImageText = pd.hover.c_str();
-    rp.smallImageKey = pd.smallImage.c_str();
-    rp.smallImageText = pd.smallHover.c_str();
 
-    Discord_UpdatePresence(&rp);
+    rpc.largeImageKey = pd.image.c_str();
+    rpc.largeImageText = pd.hover.c_str();
+    rpc.smallImageKey = pd.smallImage.c_str();
+    rpc.smallImageText = pd.smallHover.c_str();
 
+    Discord_UpdatePresence(&rpc);
     gameWrapper->SetTimeout(std::bind(&DiscordRPCPlugin::checkActivity, this), 1.0f);
 }
 
@@ -313,7 +328,6 @@ void DiscordRPCPlugin::onLoad() {
     localCvar.bindTo(activityCvars[5]);
 
     initDiscord();
-
     checkActivity();
 }
 
