@@ -10,6 +10,7 @@ const std::map<std::string, std::string> mapNames = {
     { "arc_p",                   "ARCtagon (Night)" },
     { "bb_p",                    "Champions Field (NFL)" },
     { "beach_p",                 "Salty Shores" },
+    { "beach_night_grs_p",       "Salty Shores (Salty Fest)" },
     { "beach_night_p",           "Salty Shores (Night)" },
     { "cs_hw_p",                 "Rivals Arena" },
     { "cs_day_p",                "Champions Field (Day)" },
@@ -134,7 +135,7 @@ const std::map<int32_t, std::string> playlistNames = {
     { 19,   "Workshop" },
     { 20,   "Custom Training" }, // UGCTrainingEditor (Game no longer uses this for the editor, they now use "21" for all custom training)
     { 21,   "Custom Training" }, // UGCTraining
-    { 22,   "Tournament" }, // Tournament (Custom Tournaments)
+    { 22,   "Tournament" }, // Tournament (User created custom tournaments)
     { 23,   "Dropshot" },
     { 24,   "Lan" },
     { 26,   "FACEIT" },
@@ -145,7 +146,7 @@ const std::map<int32_t, std::string> playlistNames = {
     { 31,   "Ghost Hunt" },
     { 32,   "Beach Ball" },
     { 33,   "Spike Rush" },
-    { 34,   "Tournament" }, // AutoTournament (Psyonix Tournaments)
+    { 34,   "Tournament" }, // AutoTournament (Psyonix tournaments)
     { 35,   "Rocket Labs" }, // RocketLabs (Different MapSet from Experimental)
     { 37,   "Dropshot Rumble" },
     { 38,   "Heatseeker" },
