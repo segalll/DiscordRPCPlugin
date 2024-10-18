@@ -87,6 +87,8 @@ const std::map<std::string, std::string> mapNames = {
     { "wasteland_s_p",           "Wasteland (Day)" },
     { "wasteland_night_s_p",     "Wasteland (Night)" },
     { "wasteland_grs_p",         "Wasteland (Pitched)" },
+    { "woods_p",                 "Drift Woods (Dawn)" },
+    { "woods_night_p",           "Drift Woods (Night)" },
 };
 
 const std::vector<std::string> rankNames = {
