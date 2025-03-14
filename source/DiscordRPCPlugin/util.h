@@ -79,6 +79,7 @@ const std::map<std::string, std::string> mapNames = {
     { "throwbackstadium_P",      "Throwback Stadium" },
     { "underwater_p",            "AquaDome" },
     { "underwater_grs_p",        "AquaDome (Salty Shallows)" },
+    { "uf_day_p",                "Futura Garden (Day)" },
     { "utopiastadium_p",         "Utopia Coliseum (Day)" },
     { "utopiastadium_dusk_p",    "Utopia Coliseum (Dusk)" },
     { "utopiaStadium_lux_p",     "Utopia Coliseum (Gilded)" },
