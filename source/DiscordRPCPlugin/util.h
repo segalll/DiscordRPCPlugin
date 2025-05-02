@@ -44,6 +44,7 @@ const std::map<std::string, std::string> mapNames = {
     { "labs_galleon_mast_p",     "Galleon Retro" },
     { "labs_galleon_p",          "Galleon" },
     { "labs_holyfield_p",        "Loophole" },
+    { "labs_holyfield_space_p",  "Force Field" },
     { "labs_octagon_02_p",       "Octagon (New)" },
     { "labs_octagon_p",          "Octagon (Old)" },
     { "labs_pillarglass_p",      "Hourglass" },
@@ -170,7 +171,16 @@ const std::map<int32_t, std::string> playlistNames = {
     { 64,   "Haunted Heatseeker" },
     { 66,   "Heatseeker Ricochet" },
     { 67,   "Spooky Cube" },
-    { 68,   "G-Force Frenzy" }
+    { 68,   "G-Force Frenzy" },
+    { 70,   "Dropshot Rumble" },
+    { 72,   "Territory" },
+    { 73,   "Online Freeplay" },
+    { 74,   "Split Shot Doubles" },
+    { 76,   "Split Shot Heatseeker Doubles" },
+    { 79,   "Split Shot Snow Day" },
+    { 80,   "Run It Back" },
+    { 81,   "Car Wars" },
+    { 82,   "Pizza Party" }
 };
 
 const std::vector<int32_t> formatThesePlaylists = {
