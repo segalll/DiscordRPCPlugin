@@ -71,6 +71,7 @@ const std::map<std::string, std::string> mapNames = {
     { "stadium_race_day_p",      "DFH Stadium (Circuit)" },
     { "stadium_winter_p",        "DFH Stadium (Snowy)" },
     { "stadium_day_p",           "DFH Stadium (Day)" },
+    { "stadium_10a_p ",          "DFH Stadium (Anniversary)" },
     { "street_p",                "Sovereign Heights (Dusk)" },
     { "swoosh_p",                "Champions Field (Nike FC)" },
     { "trainstation_dawn_p",     "Urban Central (Dawn)" },
