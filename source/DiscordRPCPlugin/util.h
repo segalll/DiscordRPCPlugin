@@ -71,7 +71,7 @@ const std::map<std::string, std::string> mapNames = {
     { "stadium_race_day_p",      "DFH Stadium (Circuit)" },
     { "stadium_winter_p",        "DFH Stadium (Snowy)" },
     { "stadium_day_p",           "DFH Stadium (Day)" },
-    { "stadium_10a_p ",          "DFH Stadium (Anniversary)" },
+    { "stadium_10a_p ",          "DFH Stadium (10th Anniversary)" },
     { "street_p",                "Sovereign Heights (Dusk)" },
     { "swoosh_p",                "Champions Field (Nike FC)" },
     { "trainstation_dawn_p",     "Urban Central (Dawn)" },
@@ -121,8 +121,9 @@ const std::vector<std::string> rankNames = {
     "Supersonic Legend"
 };
 
+// Missing ids: 5, 14, 36, 39, 42, 45, 51, 53, 56, 57, 58, 59, 60, 61, 63, 69, 71, 77, 78, 84, 85
 const std::map<int32_t, std::string> playlistNames = {
-    { 0,    "Casual" },
+    { 0,    "Casual" }, // Generic id to indicate ALL casual playlists, commonly used in API responses related to player skill/mmr. 
     { 1,    "Duel" },
     { 2,    "Doubles" },
     { 3,    "Standard" },
@@ -133,6 +134,7 @@ const std::map<int32_t, std::string> playlistNames = {
     { 9,    "Training" },
     { 10,   "Ranked Duel" },
     { 11,   "Ranked Doubles" },
+    { 12,   "Solo Standard" },
     { 13,   "Ranked Standard" },
     { 15,   "Snow Day" },
     { 16,   "Rocket Labs" }, // Experimental
@@ -144,6 +146,7 @@ const std::map<int32_t, std::string> playlistNames = {
     { 22,   "Tournament" }, // Tournament (User created custom tournaments)
     { 23,   "Dropshot" },
     { 24,   "Lan" },
+    { 25,   "Anniversary" }, // 10th Anniversary of SARPBC.
     { 26,   "FACEIT" },
     { 27,   "Ranked Hoops" },
     { 28,   "Ranked Rumble" },
@@ -156,7 +159,7 @@ const std::map<int32_t, std::string> playlistNames = {
     { 35,   "Rocket Labs" }, // RocketLabs (Different MapSet from Experimental)
     { 37,   "Dropshot Rumble" },
     { 38,   "Heatseeker" },
-    { 39,   "Co-Op Vs AI" },
+    { 40,   "Co-Op Vs AI" },
     { 41,   "Heatseeker" },
     { 43,   "Heatseeker Doubles" },
     { 44,   "Winter Breakaway" },
@@ -168,8 +171,9 @@ const std::map<int32_t, std::string> playlistNames = {
     { 52,   "Gotham City Rumble" },
     { 54,   "Knockout" },
     { 55,   "confidential_thirdwheel_test" }, // April fools playlist, name can change every year depending on what the event is.
-    { 62,   "Nike FC Showdown" },
-    { 64,   "Haunted Heatseeker" },
+    { 62,   "Nike FC Showdown" },   
+    { 64,   "Haunted Heatseeker" }, // Same thing as 65, but 2v2 and limited to the "Farm_HW_P" map only.
+    { 65,   "Haunted Heatseeker" }, // Same thing as 54, but 3v3 and limited to the "Spooky" mapset.
     { 66,   "Heatseeker Ricochet" },
     { 67,   "Spooky Cube" },
     { 68,   "G-Force Frenzy" },
@@ -177,11 +181,14 @@ const std::map<int32_t, std::string> playlistNames = {
     { 72,   "Territory" },
     { 73,   "Online Freeplay" },
     { 74,   "Split Shot Doubles" },
+    { 75,   "Split Shot Heatseeker" },
     { 76,   "Split Shot Heatseeker Doubles" },
     { 79,   "Split Shot Snow Day" },
     { 80,   "Run It Back" },
     { 81,   "Car Wars" },
-    { 82,   "Pizza Party" }
+    { 82,   "Pizza Party" },
+    { 83,   "Push The Puck" },
+    { 86,   "Adidas Soccar Strike" }
 };
 
 const std::vector<int32_t> formatThesePlaylists = {
@@ -195,14 +202,16 @@ const std::vector<int32_t> formatThesePlaylists = {
 };
 
 std::string capitalize(std::string s) {
-    s[0] = std::toupper(s[0]);
+    if (!s.empty()) {
+        s[0] = std::toupper(s[0]);
 
-    for (size_t i = 1; i < s.length(); i++) {
-        if (s[i - 1] == ' ') {
-            s[i] = std::toupper(s[i]);
-        }
-        else {
-            s[i] = std::tolower(s[i]);
+        for (size_t i = 1; i < s.length(); i++) {
+            if (s[i - 1] == ' ') {
+                s[i] = std::toupper(s[i]);
+            }
+            else {
+                s[i] = std::tolower(s[i]);
+            }
         }
     }
 
@@ -247,7 +256,7 @@ std::string mapToImageKey(std::string map) {
 }
 
 std::string getRank(int tierId) {
-    if ((tierId >= 0) && (tierId < 23)) {
+    if ((tierId >= 0) && (tierId < rankNames.size())) {
         return rankNames.at(tierId);
     }
 
